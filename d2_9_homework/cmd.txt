@@ -1,0 +1,60 @@
+>>> from NewsPortal.models import *
+>>> User.objects.create_user("Alex")
+>>> from NewsPortal.models import *
+>>> User.objects.create_user("Alex")
+<User: Alex>
+>>> User.objects.create_user("User")    
+<User: User>
+>>> u1 = User.objects.get(id=2) 
+>>> u2 = User.objects.get(id=3) 
+>>> u1
+<User: Alex>
+>>> u2
+<User: User>
+
+>>> a1 = Author.objects.create(author=u1)  
+>>> a2 = Author.objects.create(author=u2)  
+
+>>> Category.objects.create(name="Super")                                                                 
+<Category: Category object (1)>
+>>> Category.objects.create(name="Good")  
+<Category: Category object (2)>
+>>> Category.objects.create(name="Not bad") 
+<Category: Category object (3)>
+>>> Category.objects.create(name="bad")     
+<Category: Category object (4)>
+
+>>> post1 = Post.objects.create(type_post="PO", author_id=a1, header="title", text="Hello, everyone")     
+>>> post2 = Post.objects.create(type_post="PO", author_id=a2, header="title", text="Hi")                                         
+>>> post3 = Post.objects.create(type_post="AR", author_id=a1, header="title", text="form") 
+
+>>> post1.post_category.add(Category.objects.get(id=1)) 
+>>> post1.post_category.add(Category.objects.get(id=2)) 
+>>> post2.post_category.add(Category.objects.get(id=1)) 
+>>> post2.post_category.add(Category.objects.get(id=4)) 
+>>> post3.post_category.add(Category.objects.get(id=1)) 
+>>> post3.post_category.add(Category.objects.get(id=3)) 
+
+>>> Comment.objects.create(comment_post=post1, comment_user=u1, text="Good job") 
+<Comment: Comment object (1)>
+>>> Comment.objects.create(comment_post=post1, comment_user=u2, text="Thanks")    
+<Comment: Comment object (2)>
+>>> Comment.objects.create(comment_post=post2, comment_user=u2, text="Not bad") 
+<Comment: Comment object (3)>
+>>> Comment.objects.create(comment_post=post2, comment_user=u1, text="Uwu")     
+<Comment: Comment object (4)>
+
+>>> post1.like()
+>>> post2.dislike() 
+>>> post3.dislike() 
+>>> post3.like()    
+>>> post3.like()
+
+>>> Comment.objects.get(id=1).like()
+>>> Comment.objects.get(id=2).like() 
+>>> Comment.objects.get(id=3).like() 
+>>> Comment.objects.get(id=4).like() 
+
+>>> a1.update_rating()              
+>>> a1.rating
+10
